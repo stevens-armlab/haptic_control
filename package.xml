@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>haptic_control</name>
+  <version>0.0.0</version>
+  <description>The haptic_control package</description>
+
+  <maintainer email="jsitler@todo.todo">jsitler</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <!-- <build_depend>continuum_kin_control/</build_depend> -->
+  <!-- <build_depend>potentiometer_data/</build_depend> -->
+  <!-- <build_depend>quad-motor-teensy/</build_depend> -->
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <!-- <build_export_depend>continuum_kin_control/</build_export_depend> -->
+  <!-- <build_export_depend>potentiometer_data/</build_export_depend> -->
+  <!-- <build_export_depend>quad-motor-teensy/</build_export_depend> -->
+  <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <!-- <exec_depend>continuum_kin_control/</exec_depend> -->
+  <!-- <exec_depend>potentiometer_data/</exec_depend> -->
+  <!-- <exec_depend>quad-motor-teensy/</exec_depend> -->
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+  <export>
+  </export>
+</package>
