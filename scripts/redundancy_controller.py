@@ -51,6 +51,7 @@ elif config == 4:
 arm_pub = rospy.Publisher('arm_command', Float32MultiArray, queue_size=1)
 arm1_pose_pub = rospy.Publisher('arm1/pose', Float32MultiArray, queue_size=1)
 arm2_pose_pub = rospy.Publisher('arm2/pose', Float32MultiArray, queue_size=1)
+grip_pub = rospy.Publisher('gripper_cmd', Float32MultiArray, queue_size=1)
 br = tf.TransformBroadcaster()
 
 
@@ -62,6 +63,13 @@ f2 = forkin_6dof(q2, Rb2, b2)
 Xd1 = np.append(f1[0:3, 3, 5], R.as_rotvec(R.from_dcm(f1[0:3, 0:3, 5])), axis=0)
 Xd2 = np.append(f2[0:3, 3, 5], R.as_rotvec(R.from_dcm(f2[0:3, 0:3, 5])), axis=0)
 
+L_Grip = None
+R_Grip = None
+open_grip = -1.3
+close_grip = 0.3
+grip_rate = 0.05
+L_gripper_pose = 0.0
+R_gripper_pose = 0.0
 
 lambdap = 20
 lambdaw = 20
@@ -86,6 +94,17 @@ def Xd1_cb(cmd):
 def Xd2_cb(cmd):
 	global Xd2
 	Xd2 = np.array([cmd.data[0], cmd.data[1], cmd.data[2], cmd.data[3], cmd.data[4], cmd.data[5]])
+
+
+
+def grip_cb(cmd):
+	"""
+    stores the desired gripper state
+    1 : Close the gripper (Grasp)
+    2 : Open the gripper (Release)
+    """
+	global L_Grip, R_Grip
+	L_Grip, R_Grip = cmd.data[0], cmd.data[1]
 
 
 
@@ -131,6 +150,25 @@ def RR_rates(Pc, Rc, Pd, Rd):
 
 	return xdot
 
+
+def gripper_control():
+	global L_gripper_pose
+	global R_gripper_pose
+	if (L_Grip == 1) and (L_gripper_pose < close_grip):
+		# If desired to be closed AND grip isnt fully closed
+		L_gripper_pose += grip_rate
+	if (R_Grip == 1) and (R_gripper_pose < close_grip):
+		# If desired to be closed AND grip isnt fully closed
+		R_gripper_pose += grip_rate
+	if (L_Grip == 0) and (L_gripper_pose > open_grip):
+		# If desired to be opened AND grip isnt fully open
+		L_gripper_pose += -grip_rate
+	if (R_Grip == 0) and (R_gripper_pose > open_grip):
+		# If desired to be opened AND grip isnt fully open
+		R_gripper_pose += -grip_rate
+	grip_cmd = Float32MultiArray()
+	grip_cmd.data = [L_gripper_pose, R_gripper_pose]
+	grip_pub.publish(grip_cmd)
 
 def RR_control():
 	global q1
@@ -200,6 +238,8 @@ def RR_control():
 		# 	a2gripper_cmd, a2gripper_cmd, a2gripper_cmd]
 		# arm_joints.publish(joint_cmd)
 
+		gripper_control()
+
 		rate.sleep()
 
 
@@ -209,6 +249,7 @@ if __name__ == '__main__':
 		# rospy.Subscriber('joy', Joy, joy_cb)
 		rospy.Subscriber('Xd1', Float32MultiArray, Xd1_cb)
 		rospy.Subscriber('Xd2', Float32MultiArray, Xd2_cb)
+		rospy.Subscriber('/grippers', Float32MultiArray, grip_cb)
 		RR_control()
 
 	except rospy.ROSInterruptException:

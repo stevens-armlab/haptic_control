@@ -22,6 +22,9 @@ def arm_cb(cmd):
 	q1 = np.vstack([cmd.data[0], cmd.data[1], cmd.data[2], cmd.data[3], cmd.data[4], cmd.data[5]])
 	q2 = np.vstack([cmd.data[6], cmd.data[7], cmd.data[8], cmd.data[9], cmd.data[10], cmd.data[11]])
 
+def grip_cb(cmd):
+	global a1gripper_cmd, a2gripper_cmd
+	a1gripper_cmd, a2gripper_cmd = cmd.data[0], cmd.data[1]
 
 def rviz():
 	global q1
@@ -50,6 +53,7 @@ if __name__ == '__main__':
 		rospy.init_node('visualization_2arm', anonymous=True)
 		# rospy.Subscriber('joy', Joy, joy_cb)
 		rospy.Subscriber('arm_command', Float32MultiArray, arm_cb)
+		rospy.Subscriber('/gripper_cmd', Float32MultiArray, grip_cb)
 		rviz()
 
 	except rospy.ROSInterruptException:
