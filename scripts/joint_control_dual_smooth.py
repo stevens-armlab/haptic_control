@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Moves manipulator to desired pose using smooth 5th order polynomial
+# Helps prevent crashing in Gazebo
+
 import rospy
 import numpy as np
 from std_msgs.msg import Float32MultiArray
@@ -13,13 +16,25 @@ import tf
 # Edit these values to set desired pose:
 # q1_des = np.array([0.4, 0.5, -0.5, 0.4, 1.570796326794897, 0])
 # q2_des = np.array([-0.4, 0.5, -0.5, -0.4, 1.570796326794897, 0])
-q1_des = np.array([0.4, 0.5, -0.5, 0.4, 1.570796326794897, 0])
-q2_des = np.array([-0.4, 0.5, -0.5, -0.4, 1.570796326794897, 0])
+q1_des = np.array([-0.529442400250546,\
+	1.84120616245987,\
+	0.0858536188643280,\
+	-2.10872116955797,\
+	0.628455304252643,\
+	2.20618345735433])
+q2_des = np.array([-2.78930280750380,\
+	2.34758689366205,\
+	-0.782077266498912,\
+	-1.58487237378430,\
+	2.78928572198610,\
+	1.55577545232483])
+# q1_des = np.array([0, 0, 0, 0, 0, 0])
+# q2_des = np.array([0, 0, 0, 0, 0, 0])
 
 
 rate_HZ = 100.0
 dt = 1/rate_HZ
-duration = 10.0
+duration = 20.0
 
 q1_start = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 q2_start = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])

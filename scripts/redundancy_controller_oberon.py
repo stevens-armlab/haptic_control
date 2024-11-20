@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Converts task space commands to joint space commands
+# Publishes joint commands to 'arm_command' topic
+
 import rospy
 import numpy as np
 from std_msgs.msg import Float32MultiArray
@@ -9,41 +12,7 @@ from forkin_oberon import forkin_oberon
 from jacobian_oberon import jacobian_oberon
 import tf
 
-# config = input("Enter config (1-4):")
-# if config == 1:
-# 	b1 = np.vstack([0.2306,  0.095525, -0.23432])
-# 	b2 = np.vstack([0.2306, -0.095525, -0.23432])
-# 	Rb1 = np.identity(3)
-# 	Rb2 = np.identity(3)
-# 	q1 = np.vstack([np.pi/4, np.pi/3, -np.pi/3, -np.pi/4, 0, 0])
-# 	q2 = np.vstack([-np.pi/4, np.pi/3, -np.pi/3, np.pi/4, 0, 0])
-# elif config == 2:
-# 	b1 = np.vstack([0.2356,  0.19, -0.23432])
-# 	b2 = np.vstack([0.2356, -0.19, -0.23432])
-# 	Rb1 = np.identity(3)
-# 	Rb2 = np.identity(3)
-# 	q1 = np.vstack([np.pi/4, np.pi/3, -np.pi/3, -np.pi/4, 0, 0])
-# 	q2 = np.vstack([-np.pi/4, np.pi/3, -np.pi/3, np.pi/4, 0, 0])
-# elif config == 3:
-# 	b1 = np.vstack([0.1706,  0.175, -0.23432])
-# 	b2 = np.vstack([0.1706, -0.175, -0.23432])
-# 	Rb1 = np.array([[0, -1, 0],\
-# 		[1, 0, 0],\
-# 		[0, 0, 1]])
-# 	Rb2 = np.array([[0, 1, 0],\
-# 		[-1, 0, 0],\
-# 		[0, 0, 1]])
-# 	q1 = np.vstack([-np.pi/2, np.pi/3, np.pi/3, 0, -np.pi/6, np.pi/2])
-# 	q2 = np.vstack([np.pi/2, np.pi/3, np.pi/3, 0, -np.pi/6, -np.pi/2])
-# elif config == 4:
-# 	b1 = np.vstack([0.1586,  0.19, -0.33052])
-# 	b2 = np.vstack([0.1586, -0.19, -0.33052])
-# 	Rb1 = np.array([[0, 0, 1],\
-# 		[0, 1, 0],\
-# 		[-1, 0, 0]])
-# 	Rb2 = np.array([[0, 0, 1],\
-# 		[0, 1, 0],\
-# 		[-1, 0, 0]])
+
 # 	q1 = np.vstack([0, -np.pi/3, -np.pi/3, 0, np.pi/6, 0])
 # 	q2 = np.vstack([0, -np.pi/3, -np.pi/3, 0, np.pi/6, 0])
 b1 = np.vstack([1.3, -0.5, -0.615])
@@ -52,10 +21,10 @@ Rb1 = np.identity(3)
 Rb2 = np.identity(3)
 # q1 = np.vstack([0, 0, 0, 0, 0, 0])
 # q2 = np.vstack([0, 0, 0, 0, 0, 0])
-q1 = np.vstack([0.4, 0.5, -0.5, 0.4, 1.5708, 0])
-q2 = np.vstack([-0.4, 0.5, -0.5, -0.4, 1.5708, 0])
-# q1 = np.vstack([0, 0.8, -0.7, 0, 1.5, 0])
-# q2 = np.vstack([0, 0.8, -0.7, 0, 1.5, 0])
+# q1 = np.vstack([0.4, 0.5, -0.5, 0.4, 1.5708, 0])
+# q2 = np.vstack([-0.4, 0.5, -0.5, -0.4, 1.5708, 0])
+q1 = np.vstack([0, 0.8, -0.7, 0, 1.5, 0])
+q2 = np.vstack([0, 0.8, -0.7, 0, 1.5, 0])
 
 arm_pub = rospy.Publisher('arm_command', Float32MultiArray, queue_size=1)
 arm1_pose_pub = rospy.Publisher('arm1/pose', Float32MultiArray, queue_size=1)

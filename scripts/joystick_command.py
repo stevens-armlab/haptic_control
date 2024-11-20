@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+# Joystick/gamepad control for bimanual UVMS teleop
+# 'rosrun joy joy_node' to connect device
+# Publishes task space commands on topics 'Xd1' and 'Xd2', and gripper open/close commands
+
 import rospy
 import numpy as np
 from std_msgs.msg import Float32MultiArray

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Deprecated
+# Joystick control of manipulators using anchor points
+
 import rospy
 import numpy as np
 from std_msgs.msg import Float32MultiArray

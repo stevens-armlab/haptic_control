@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+# Deprecated
+# Directly control joint commands via joystick
+# Each joystick axis/button corresponds to a joint angle
+
 import rospy
 import numpy as np
 from std_msgs.msg import Float32MultiArray
@@ -9,7 +13,7 @@ from jacobian_6dof import jacobian_6dof
 from forkin_6dof import forkin_6dof
 from scipy.spatial.transform import Rotation as R
 
-arm_pub = rospy.Publisher('arm_command_joystick', Float32MultiArray, queue_size=1)
+arm_pub = rospy.Publisher('arm_command', Float32MultiArray, queue_size=1)
 arm_joints = rospy.Publisher('joint_states', JointState, queue_size=1)
 
 a1l1_cmd = 0.0
